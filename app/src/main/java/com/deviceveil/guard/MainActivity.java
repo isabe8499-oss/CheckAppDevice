@@ -70,36 +70,36 @@ public class MainActivity extends AppCompatActivity {
 
         TextView title = text("DeviceVeil", 26, true);
         root.addView(title);
-        root.addView(text("通用设备指纹保护与 Hook 模块配置", 13, false));
+        root.addView(text("Configuração de proteção de identidade do dispositivo e módulos Hook", 13, false));
 
-        root.addView(section("作用目标"));
-        root.addView(switchRow("启用模块", ModuleConfig.KEY_GLOBAL_ENABLED, true));
+        root.addView(section("Aplicativos-alvo"));
+        root.addView(switchRow("Ativar módulo", ModuleConfig.KEY_GLOBAL_ENABLED, true));
 
-        root.addView(text("只能从已安装应用中选择目标，保存时写入应用包名。", 13, false));
+        root.addView(text("Selecione os aplicativos instalados que deseja proteger. As seleções são salvas pelo nome do pacote.", 13, false));
         selectedAppsContainer = new LinearLayout(this);
         selectedAppsContainer.setOrientation(LinearLayout.VERTICAL);
         root.addView(selectedAppsContainer);
 
-        targetPackageInput = input("手动输入目标包名，例如 com.example.app");
+        targetPackageInput = input("Digite o pacote do aplicativo, por exemplo: com.exemplo.app");
         root.addView(targetPackageInput);
-        Button addTargetButton = button("添加包名");
+        Button addTargetButton = button("Adicionar pacote");
         addTargetButton.setOnClickListener(v -> addManualTargetPackage());
         root.addView(addTargetButton);
 
-        processRulesInput = input("进程规则：*、:remote、!:push");
+        processRulesInput = input("Regras de processo: *、:remote、!:push");
         processRulesInput.setSingleLine(false);
         processRulesInput.setMinLines(2);
         processRulesInput.setText(prefs.getString(ModuleConfig.KEY_PROCESS_RULES, "*"));
         root.addView(processRulesInput);
 
-        root.addView(section("运行自检"));
+        root.addView(section("Diagnóstico do módulo"));
         diagnosticsContainer = new LinearLayout(this);
         diagnosticsContainer.setOrientation(LinearLayout.VERTICAL);
         root.addView(diagnosticsContainer);
         renderDiagnostics();
 
-        root.addView(section("已安装应用"));
-        searchInput = input("搜索包名或应用名称");
+        root.addView(section("Aplicativos instalados"));
+        searchInput = input("Pesquisar por nome do aplicativo ou pacote");
         searchInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -115,26 +115,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         root.addView(searchInput);
-        Button searchButton = button("搜索");
+        Button searchButton = button("Pesquisar");
         searchButton.setOnClickListener(v -> renderApps(searchInput.getText().toString()));
         root.addView(searchButton);
         appsContainer = new LinearLayout(this);
         appsContainer.setOrientation(LinearLayout.VERTICAL);
         root.addView(appsContainer);
 
-        root.addView(section("Hook 覆盖"));
-        root.addView(text("稳定模式是 UI 预设和状态标记；实际启用哪些 Hook 由下方每个模块开关决定。", 13, false));
-        stableModeSwitch = (SwitchMaterial) switchRow("稳定模式", ModuleConfig.KEY_STABLE_MODE, true);
+        root.addView(section("Configurações dos Hooks"));
+        root.addView(text("O modo estável é uma predefinição. Os Hooks efetivamente usados são definidos pelos interruptores de cada módulo abaixo.", 13, false));
+        stableModeSwitch = (SwitchMaterial) switchRow("Modo estável", ModuleConfig.KEY_STABLE_MODE, true);
         root.addView(stableModeSwitch);
-        root.addView(switchRow("记录敏感值到日志", ModuleConfig.KEY_LOG_SENSITIVE, false));
-        root.addView(buttonRow("应用稳定预设", v -> setSafeModeModules(),
-                "全部关闭 Hook", v -> setAllModulesEnabled(false)));
+        root.addView(switchRow("Registrar valores sensíveis nos logs", ModuleConfig.KEY_LOG_SENSITIVE, false));
+        root.addView(buttonRow("Aplicar configuração estável", v -> setSafeModeModules(),
+                "Desativar todos os Hooks", v -> setAllModulesEnabled(false)));
         modulesContainer = new LinearLayout(this);
         modulesContainer.setOrientation(LinearLayout.VERTICAL);
         root.addView(modulesContainer);
         renderModuleGroups();
 
-        Button save = button("保存配置");
+        Button save = button("Salvar configurações");
         save.setOnClickListener(v -> saveConfig());
         root.addView(save);
 
@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void saveConfig() {
         if (selectedPackages.isEmpty()) {
-            Toast.makeText(this, "请至少选择一个已安装应用。", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "请至少选择一个Aplicativos instalados。", Toast.LENGTH_LONG).show();
             return;
         }
         persistConfig(true);
@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
         makePreferencesReadable();
         if (showToast) {
             Toast.makeText(this,
-                    "已保存配置。请强制停止目标应用后重新打开。",
+                    "已Salvar configurações。请强制停止目标应用后重新打开。",
                     Toast.LENGTH_LONG).show();
         }
         refreshStatusViews();
@@ -263,12 +263,12 @@ public class MainActivity extends AppCompatActivity {
             }
             appsContainer.addView(appRow(app.label, app.packageName));
             if (++shown >= 60) {
-                appsContainer.addView(text("仅显示前 60 个结果，请输入更精确的关键词继续筛选。", 12, false));
+                appsContainer.addView(text("Exibindo os primeiros 60 resultados. Digite uma palavra-chave mais específica para filtrar.", 12, false));
                 break;
             }
         }
         if (shown == 0) {
-            appsContainer.addView(text("没有找到匹配的已安装应用。请确认应用已安装，或尝试输入完整/部分包名。", 13, false));
+            appsContainer.addView(text("没有找到匹配的Aplicativos instalados。请确认应用已安装，或尝试输入完整/部分包名。", 13, false));
         }
     }
 
@@ -289,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
         TextView text = text(label + "\n" + packageName, 13, false);
         row.addView(text, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
         boolean selected = selectedPackages.contains(packageName);
-        Button add = button(selected ? "移除" : "添加");
+        Button add = button(selected ? "Remover" : "添加");
         add.setOnClickListener(v -> toggleTargetPackage(packageName));
         row.addView(add);
         return row;
@@ -310,7 +310,7 @@ public class MainActivity extends AppCompatActivity {
         if (targetPackageInput == null) return;
         String packageName = targetPackageInput.getText().toString().trim().toLowerCase(Locale.ROOT);
         if (!isValidPackageName(packageName)) {
-            Toast.makeText(this, "请输入有效包名。", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Digite um nome de pacote válido.", Toast.LENGTH_LONG).show();
             return;
         }
         selectedPackages.add(packageName);
@@ -318,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
         persistConfig(false);
         renderSelectedApps();
         renderApps(searchInput != null ? searchInput.getText().toString() : "");
-        Toast.makeText(this, "已添加目标包名，请强制停止目标应用后重新打开。", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Pacote adicionado. Force a parada do aplicativo-alvo e abra-o novamente.", Toast.LENGTH_LONG).show();
     }
 
     private void loadSelectedPackages() {
@@ -336,7 +336,7 @@ public class MainActivity extends AppCompatActivity {
         if (selectedAppsContainer == null) return;
         selectedAppsContainer.removeAllViews();
         if (selectedPackages.isEmpty()) {
-            selectedAppsContainer.addView(text("尚未选择目标应用。请在下方已安装应用中搜索并添加。", 13, false));
+            selectedAppsContainer.addView(text("尚Nenhum selecionado目标应用。请在下方Aplicativos instalados中Pesquisar并添加。", 13, false));
             return;
         }
 
@@ -355,7 +355,7 @@ public class MainActivity extends AppCompatActivity {
 
         TextView text = text(label + "\n" + packageName, 13, false);
         row.addView(text, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
-        Button remove = button("移除");
+        Button remove = button("Remover");
         remove.setOnClickListener(v -> toggleTargetPackage(packageName));
         row.addView(remove);
         return row;
@@ -388,7 +388,7 @@ public class MainActivity extends AppCompatActivity {
             ApplicationInfo app = pm.getApplicationInfo(packageName, 0);
             return getAppLabel(pm, app);
         } catch (PackageManager.NameNotFoundException ignored) {
-            return "未知应用";
+            return "Aplicativo desconhecido";
         }
     }
 
@@ -450,9 +450,9 @@ public class MainActivity extends AppCompatActivity {
     private void renderModuleGroups() {
         moduleSwitches.clear();
         modulesContainer.removeAllViews();
-        addModuleGroup("推荐保护（Java 修改 + SO/Native 基础修改）", ModuleConfig.recommendedModules());
-        addModuleGroup("高级保护（指纹、隐私、反检测）", ModuleConfig.advancedModules());
-        addModuleGroup("监控与调试（日志较多）", ModuleConfig.monitorModules());
+        addModuleGroup("Proteção recomendada (Java e modificações básicas SO/Native)", ModuleConfig.recommendedModules());
+        addModuleGroup("Proteção avançada (identidade digital, privacidade e antidetecção)", ModuleConfig.advancedModules());
+        addModuleGroup("Monitoramento e depuração (gera mais logs)", ModuleConfig.monitorModules());
     }
 
     private void addModuleGroup(String title, Map<String, String> modules) {
@@ -504,7 +504,7 @@ public class MainActivity extends AppCompatActivity {
         makePreferencesReadable();
         ModuleConfig.invalidateCache();
         refreshStatusViews();
-        Toast.makeText(this, "已切换稳定模式。请强制停止目标应用后重新打开。", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "已切换Modo estável。请强制停止目标应用后重新打开。", Toast.LENGTH_LONG).show();
     }
 
     private void refreshStatusViews() {
@@ -515,16 +515,16 @@ public class MainActivity extends AppCompatActivity {
         if (diagnosticsContainer == null) return;
         diagnosticsContainer.removeAllViews();
         File prefsFile = getPrefsFile();
-        diagnosticsContainer.addView(text("全局启用: " + yesNo(prefs.getBoolean(ModuleConfig.KEY_GLOBAL_ENABLED, true)), 13, false));
-        diagnosticsContainer.addView(text("目标应用: " + (selectedPackages.isEmpty() ? "未选择" : String.join(", ", selectedPackages)), 13, false));
-        diagnosticsContainer.addView(text("进程规则: " + prefs.getString(ModuleConfig.KEY_PROCESS_RULES, "*"), 13, false));
-        diagnosticsContainer.addView(text("稳定模式: " + yesNo(prefs.getBoolean(ModuleConfig.KEY_STABLE_MODE, true)), 13, false));
-        diagnosticsContainer.addView(text("配置文件: " + (prefsFile.exists() ? prefsFile.getAbsolutePath() : "未生成"), 13, false));
-        diagnosticsContainer.addView(text("配置已设为全局可读: " + yesNo(prefsFile.exists() && prefsFile.canRead()), 13, false));
-        diagnosticsContainer.addView(text("配置读取方式: ContentProvider / XSharedPreferences", 13, false));
-        diagnosticsContainer.addView(text("已启用 Hook: " + enabledModuleCount() + " / " + ModuleConfig.moduleLabels().size(), 13, false));
+        diagnosticsContainer.addView(text("Ativação global: " + yesNo(prefs.getBoolean(ModuleConfig.KEY_GLOBAL_ENABLED, true)), 13, false));
+        diagnosticsContainer.addView(text("Aplicativos-alvo: " + (selectedPackages.isEmpty() ? "Nenhum selecionado" : String.join(", ", selectedPackages)), 13, false));
+        diagnosticsContainer.addView(text("Regras de processo: " + prefs.getString(ModuleConfig.KEY_PROCESS_RULES, "*"), 13, false));
+        diagnosticsContainer.addView(text("Modo estável: " + yesNo(prefs.getBoolean(ModuleConfig.KEY_STABLE_MODE, true)), 13, false));
+        diagnosticsContainer.addView(text("Arquivo de configuração: " + (prefsFile.exists() ? prefsFile.getAbsolutePath() : "Não gerado"), 13, false));
+        diagnosticsContainer.addView(text("Configuração legível globalmente: " + yesNo(prefsFile.exists() && prefsFile.canRead()), 13, false));
+        diagnosticsContainer.addView(text("Método de leitura: ContentProvider / XSharedPreferences", 13, false));
+        diagnosticsContainer.addView(text("Hooks ativados: " + enabledModuleCount() + " / " + ModuleConfig.moduleLabels().size(), 13, false));
         diagnosticsContainer.addView(text("Native Hook: " + (prefs.getBoolean(ModuleConfig.MODULE_NATIVE,
-                ModuleConfig.getDefaultModuleEnabled(ModuleConfig.MODULE_NATIVE)) ? "目标进程启动时加载" : "已关闭"), 13, false));
+                ModuleConfig.getDefaultModuleEnabled(ModuleConfig.MODULE_NATIVE)) ? "Carregado quando o processo-alvo iniciar" : "Desativado"), 13, false));
     }
 
     private int enabledModuleCount() {
