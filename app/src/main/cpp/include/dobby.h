@@ -9,8 +9,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-#include "/Users/corner/Library/Android/sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/c++/v1/stdbool.h"
-#include "/Users/corner/Library/Android/sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/c++/v1/stdint.h"
+#include <stdbool.h>
+#include <stdint.h>
 
 
 //#include "/Users/hb25492/Library/Android/sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/c++/v1/stdbool.h"
