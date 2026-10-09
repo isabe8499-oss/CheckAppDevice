@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void saveConfig() {
         if (selectedPackages.isEmpty()) {
-            Toast.makeText(this, "请至少选择一个Aplicativos instalados。", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Selecione pelo menos um aplicativo instalado.", Toast.LENGTH_LONG).show();
             return;
         }
         persistConfig(true);
@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
         makePreferencesReadable();
         if (showToast) {
             Toast.makeText(this,
-                    "已Salvar configurações。请强制停止目标应用后重新打开。",
+                    "Configurações salvas. Force a parada do aplicativo-alvo e abra-o novamente.",
                     Toast.LENGTH_LONG).show();
         }
         refreshStatusViews();
@@ -268,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         if (shown == 0) {
-            appsContainer.addView(text("没有找到匹配的Aplicativos instalados。请确认应用已安装，或尝试输入完整/部分包名。", 13, false));
+            appsContainer.addView(text("Nenhum aplicativo correspondente foi encontrado. Confirme se ele está instalado ou pesquise pelo nome completo ou parcial do pacote.", 13, false));
         }
     }
 
@@ -289,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
         TextView text = text(label + "\n" + packageName, 13, false);
         row.addView(text, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
         boolean selected = selectedPackages.contains(packageName);
-        Button add = button(selected ? "Remover" : "添加");
+        Button add = button(selected ? "Remover" : "Adicionar");
         add.setOnClickListener(v -> toggleTargetPackage(packageName));
         row.addView(add);
         return row;
@@ -336,7 +336,7 @@ public class MainActivity extends AppCompatActivity {
         if (selectedAppsContainer == null) return;
         selectedAppsContainer.removeAllViews();
         if (selectedPackages.isEmpty()) {
-            selectedAppsContainer.addView(text("尚Nenhum selecionado目标应用。请在下方Aplicativos instalados中Pesquisar并添加。", 13, false));
+            selectedAppsContainer.addView(text("Nenhum aplicativo-alvo selecionado. Pesquise e adicione um aplicativo na lista abaixo.", 13, false));
             return;
         }
 
@@ -504,7 +504,7 @@ public class MainActivity extends AppCompatActivity {
         makePreferencesReadable();
         ModuleConfig.invalidateCache();
         refreshStatusViews();
-        Toast.makeText(this, "已切换Modo estável。请强制停止目标应用后重新打开。", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Modo estável ativado. Force a parada do aplicativo-alvo e abra-o novamente.", Toast.LENGTH_LONG).show();
     }
 
     private void refreshStatusViews() {
@@ -543,7 +543,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String yesNo(boolean value) {
-        return value ? "是" : "否";
+        return value ? "Sim" : "Não";
     }
 
     private View buttonRow(String leftText, View.OnClickListener leftClick,
