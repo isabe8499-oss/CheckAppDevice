@@ -32,11 +32,13 @@ jobs:
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          packages: ""
 
       - name: Install Android SDK components
         run: |
-          sdkmanager "platforms;android-34" "build-tools;34.0.0" "ndk;25.0.8775105" "cmake;3.22.1"
           yes | sdkmanager --licenses
+          sdkmanager "platforms;android-34" "build-tools;34.0.0" "ndk;25.0.8775105" "cmake;3.22.1"
 
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
